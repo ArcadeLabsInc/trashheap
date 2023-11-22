@@ -14,18 +14,14 @@ class FileController extends Controller
     public function store(Request $request)
     {
         try {
-            Log::info("Here we are.");
-
-            // If we're not testing, validate the request
-            if (!app()->runningUnitTests()) {
-                $request->validate([
-                  'file' => 'required|mimetypes:application/pdf' // application/json,text/markdown,text/plain|max:1000240
-                ]);
-
-                Log::info('FileController:store: $request->file(): ' . print_r($request->file(), true));
-            }
-
-            // Store the file
+            Log::info("Here we are.");// If we're not testing, validate the request
+if (!app()->runningUnitTests()) {
+    $validatedData = $request->validate([
+        'file' => 'required|mimetypes:application/pdf'
+    ]);
+    
+    Log::info('FileController:store: $validatedData["file"]: ' . print_r($validatedData["file"], true));
+}// Store the file
             $file = $request->file('file');
             $path = Storage::putFile('uploads', $file);
             Log::info('FileController:store: $path: ' . print_r($path, true));
